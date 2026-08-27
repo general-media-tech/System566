@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚀 خطة نشر GMT الشاملة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Cairo',sans-serif;}
+  body{background:#f1f5f9;color:#1e293b;padding:16px;line-height:1.85;}
+  .wrap{max-width:860px;margin:0 auto;background:#fff;border-radius:16px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,.08);}
+  h1{font-size:23px;font-weight:900;color:#0f172a;text-align:center;}
+  .sub{text-align:center;color:#64748b;font-size:13px;margin:4px 0 18px;}
+  .warn{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:12px;padding:12px 14px;margin:14px 0;font-size:13.5px;color:#991b1b;}
+  .ok{background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:12px 14px;margin:14px 0;font-size:13.5px;color:#166534;}
+  .step{border:1px solid #e2e8f0;border-radius:14px;padding:16px 18px;margin:16px 0;}
+  .step h2{font-size:17px;font-weight:800;color:#0f172a;display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .num{background:#ef4444;color:#fff;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0;}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px;}
+  th,td{border:1px solid #e2e8f0;padding:8px 10px;text-align:right;}
+  th{background:#f8fafc;font-weight:800;}
+  code{background:#0f172a;color:#fca5a5;padding:2px 7px;border-radius:6px;font-size:12.5px;font-family:monospace;}
+  .req td{background:#fff7ed;}
+  .req .why{color:#9a3412;font-size:12px;}
+  .tag{display:inline-block;background:#dc2626;color:#fff;font-size:10px;padding:1px 7px;border-radius:20px;font-weight:800;}
+  .tag.safe{background:#16a34a;}
+  ul{margin:6px 22px;font-size:13.5px;}
+  li{margin:3px 0;}
+  .files{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .chip{background:#eef2ff;border:1px solid #c7d2fe;color:#3730a3;font-size:12px;padding:4px 10px;border-radius:8px;font-weight:600;}
+  .print{text-align:center;margin-top:18px;}
+  .print button{background:#0f172a;color:#fff;border:none;border-radius:10px;padding:10px 20px;font-weight:800;cursor:pointer;font-family:'Cairo';}
+  @media print{body{background:#fff;padding:0;}.wrap{box-shadow:none;}.print{display:none;}}
+</style>
+  <script src="gmt-image-guard.js?v=20260824"></script>
+</head>
+<body>
+<div class="wrap">
+  <h1>🚀 خطة نشر نظام GMT الشاملة</h1>
+  <div class="sub">النسخة الموحّدة — كل الخطوات الحديثة · آخر تحديث 2026-08-15</div>
+
+  <div class="warn">⚠️ <b>للمهندس:</b> ملفات SQL أدناه <b>ليست قديمة ولا للتأكيد فقط</b> — منها <b>جديد وإلزامي</b> يضيف أعمدة/جداول/دوال يحتاجها الكود الجديد. بدونها تنكسر ميزات أو يفشل الحفظ بصمت.</div>
+  <div class="ok">✅ كل ملفات SQL <b>آمنة على القاعدة القديمة</b>: تستعمل <code>if not exists</code> / <code>add column if not exists</code> — لا تحذف ولا تعدّل بياناتك. (يُنصح بأخذ نسخة احتياطية قبل التشغيل احتياطاً.)</div>
+
+  <div class="step">
+    <h2><span class="num">1</span> تشغيل SQL — القاعدة الرئيسية (MAIN)</h2>
+    <div style="font-size:13px;color:#64748b;">Supabase → SQL Editor → شغّل بالترتيب:</div>
+    <table>
+      <tr><th>الملف</th><th>الحالة</th><th>الغرض</th></tr>
+      <tr><td><code>1️⃣ الجداول الأساسية</code></td><td><span class="tag safe">أساسي</span></td><td>الجداول الأساسية (products, invoices, …)</td></tr>
+      <tr><td><code>2️⃣ المخطط الرئيسي</code></td><td><span class="tag safe">أساسي</span></td><td>أعمدة/فهارس + stock_receipts</td></tr>
+      <tr><td><code>3️⃣ جداول البوتات</code></td><td><span class="tag safe">أساسي</span></td><td>سجلّات البوتات</td></tr>
+      <tr><td><code>4️⃣ صلاحيات البوتات</code></td><td><span class="tag safe">أساسي</span></td><td>الصلاحيات</td></tr>
+      <tr><td><code>5️⃣ المتجر</code></td><td><span class="tag safe">أساسي</span></td><td>جداول المتجر</td></tr>
+      <tr><td><code>8️⃣ مصدر التقرير</code></td><td><span class="tag safe">أساسي</span></td><td>توحيد التتبّع</td></tr>
+      <tr><td><code>9️⃣ stock_moves</code></td><td><span class="tag safe">أساسي</span></td><td>حركات المخزون</td></tr>
+      <tr class="req"><td><code>🔟 دوال المخزون الموحّدة</code></td><td><span class="tag">جديد إلزامي</span></td><td class="why">دوال الخصم الذرّي — كانت مفقودة، البيع لا يخصم صحيحاً بدونها</td></tr>
+      <tr class="req"><td><code>1️⃣1️⃣ العروض وصندوق الفرع</code></td><td><span class="tag">جديد إلزامي</span></td><td class="why">gmt_offers + branch_transfers</td></tr>
+      <tr class="req"><td><code>1️⃣2️⃣ إبطال السجلات المالية</code></td><td><span class="tag">جديد إلزامي</span></td><td class="why">أعمدة إبطال الديون/المصاريف</td></tr>
+      <tr class="req"><td><code>1️⃣3️⃣ التسويات والجرد الدوري</code></td><td><span class="tag">جديد إلزامي</span></td><td class="why">gmt_settlements + stock_counts</td></tr>
+      <tr class="req"><td><code>1️⃣4️⃣ حد تنبيه المخزون</code></td><td><span class="tag">جديد إلزامي</span></td><td class="why">عمود min_stock — بدونه قد يفشل حفظ المنتج</td></tr>
+      <tr class="req"><td><code>SCHEMA_00_telemetry</code></td><td><span class="tag">جديد إلزامي</span></td><td class="why">جدول لوحة صحة النظام</td></tr>
+    </table>
+  </div>
+
+  <div class="step">
+    <h2><span class="num">2</span> تشغيل SQL — قاعدة الكفالة (WARRANTY منفصلة)</h2>
+    <div style="font-size:13.5px;">الكفالة على قاعدة مستقلّة (DB3). شغّل عليها:</div>
+    <ul><li><code>6️⃣ الكفالة</code> — جدول warranties</li><li><code>7️⃣ تتبع الكفالة</code> — تتبّع الكفالة</li></ul>
+  </div>
+
+  <div class="step">
+    <h2><span class="num">3</span> رفع الملفات المعدّلة (النشر)</h2>
+    <div style="font-size:13.5px;">ارفع محتوى الحزمة كاملاً على المستودع (استبدل القديم):</div>
+    <div style="margin-top:8px;font-weight:800;font-size:13px;">الصفحات:</div>
+    <div class="files"><span class="chip">لوحة_التجريب</span><span class="chip">المشتريات</span><span class="chip">الجرد</span><span class="chip">طابعة_الملصقات</span><span class="chip">الأوردرات</span><span class="chip">العقود</span><span class="chip">تتبع_الشحنة</span><span class="chip">إنشاء/بحث/أدمن_الكفالة</span><span class="chip">صفحات الفحص</span></div>
+    <div style="margin-top:10px;font-weight:800;font-size:13px;">البوتات (مهمّة — فيها إصلاحات):</div>
+    <div class="files"><span class="chip">gmt-core.js</span><span class="chip">gmt-staff.js</span><span class="chip">gmt-updater.js</span><span class="chip">gmt-training.js</span><span class="chip">gmt-guide-*.js</span></div>
+  </div>
+
+  <div class="step">
+    <h2><span class="num">4</span> الاختبار بعد النشر</h2>
+    <ul>
+      <li>افتح <code>لوحة_التجريب.html</code> — منها تفتح كل أداة (بوضع سيادي = كل البوتات تظهر) وتتبع «📋 قائمة الفحص».</li>
+      <li><b>المشتريات:</b> فاتورة جديدة · ترحيل (لا مضاعفة) · منتج محذوف يُعاد · بحث منتج موجود · المسودة.</li>
+      <li><b>الجرد:</b> حد التنبيه ⚠️ · سعر الشراء 🔗 (ينقل للمشتريات) · الحذف (فردي+جماعي) · فرز القديمة.</li>
+      <li><b>البوتات:</b> شغّل <code>الفاحص_المركزي</code> و<code>بوتات_الحماية</code> وراجع التقارير · <code>صحة النظام 🩺</code>.</li>
+      <li><b>أداة التسوية:</b> بالفاحص المركزي → «قطع بلا فاتورة» → «إنشاء فاتورة تسوية».</li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <h2><span class="num">5</span> ملاحظات مهمّة</h2>
+    <ul>
+      <li>لإظهار كل البوتات على أي صفحة: أضف <code>?sovereign=1</code> للرابط.</li>
+      <li>البيانات القديمة التالفة (مخزون أكبر من الفواتير) تُراجَع يدوياً — إصلاحاتنا تمنع الجديد.</li>
+      <li>الأمان الكامل (RLS + مصادقة) مؤجّل لمسار R-ERP — النظام الحالي بمفاتيح anon (لا تسريب service_role).</li>
+      <li>التفاصيل الكاملة: <code>_SQL/📖_اقرأني_ترتيب_التشغيل.md</code> + <code>📌_مذكرة_التشغيل</code>.</li>
+    </ul>
+  </div>
+
+  <div class="print"><button onclick="window.print()">🖨️ طباعة / حفظ PDF</button></div>
+</div>
+</body>
+</html>

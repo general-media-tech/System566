@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>📘 التوثيق الشامل — نظام GMT</title>
+<style>
+  :root{
+    --red:#C00012; --red-dark:#8E000D; --red-soft:#FEE2E2;
+    --ink:#111827; --ink2:#4b5563; --ink3:#6b7280;
+    --bg:#f2f3f5; --card:#ffffff; --line:#e5e7eb;
+    --ok:#16a34a; --warn:#d97706;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',Tahoma,'Cairo',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+
+  /* رأس بالهوية */
+  header{background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;padding:44px 20px 38px;text-align:center;box-shadow:0 4px 20px rgba(192,0,18,.25)}
+  header .logo{width:74px;height:74px;border-radius:18px;background:#fff;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;color:var(--red);box-shadow:0 6px 18px rgba(0,0,0,.2)}
+  header h1{font-size:30px;font-weight:900;margin-bottom:6px}
+  header p{font-size:15px;opacity:.92}
+  header .meta{margin-top:14px;font-size:12.5px;opacity:.8}
+
+  main{max-width:900px;margin:0 auto;padding:26px 18px 70px}
+
+  /* شريط تنقّل */
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 22px;margin-bottom:26px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+  .toc h3{color:var(--red);font-size:15px;margin-bottom:10px}
+  .toc a{display:inline-block;margin:4px 8px 4px 0;padding:6px 14px;background:var(--red-soft);color:var(--red-dark);border-radius:99px;font-size:13px;font-weight:700;text-decoration:none;transition:.15s}
+  .toc a:hover{background:var(--red);color:#fff}
+
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+  section h2{color:var(--red);font-size:21px;font-weight:900;margin-bottom:14px;padding-bottom:10px;border-bottom:3px solid var(--red-soft);display:flex;align-items:center;gap:10px}
+  section h3{color:var(--ink);font-size:16px;font-weight:800;margin:18px 0 8px}
+  section p{color:var(--ink2);margin-bottom:10px}
+
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:14px 0}
+  .mini{background:#fafbfc;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .mini .ic{font-size:22px;margin-bottom:6px}
+  .mini .t{font-weight:800;font-size:14px;color:var(--ink);margin-bottom:4px}
+  .mini .d{font-size:12.5px;color:var(--ink3);line-height:1.7}
+
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+  th{background:var(--red);color:#fff;padding:10px 12px;text-align:right;font-weight:800}
+  td{padding:9px 12px;border-bottom:1px solid var(--line);color:var(--ink2)}
+  tr:nth-child(even) td{background:#fafbfc}
+
+  .badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:800}
+  .b-ok{background:#dcfce7;color:#15803d}
+  .b-new{background:var(--red-soft);color:var(--red-dark)}
+
+  .note{background:var(--red-soft);border-right:4px solid var(--red);border-radius:10px;padding:12px 16px;margin:12px 0;font-size:13.5px;color:var(--red-dark)}
+  .steps{counter-reset:s;list-style:none}
+  .steps li{position:relative;padding:8px 44px 8px 0;margin-bottom:6px;color:var(--ink2);font-size:14px}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;right:0;top:6px;width:28px;height:28px;background:var(--red);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px}
+
+  footer{text-align:center;padding:30px 20px;color:var(--ink3);font-size:12.5px}
+  footer .line{width:60px;height:3px;background:var(--red);margin:0 auto 14px;border-radius:2px}
+  code{background:#f1f3f5;padding:2px 7px;border-radius:5px;font-size:12.5px;color:var(--red-dark);font-family:monospace}
+</style>
+</head>
+<body>
+  <script src="gmt-image-guard.js?v=20260824"></script>
+  <script src="gmt-updater.js?v=20260824"></script>
+
+<header>
+  <div class="logo">GMT</div>
+  <h1>التوثيق الشامل</h1>
+  <p>نظام GMT لإدارة الأعمال التجارية · General Media Tech</p>
+  <div class="meta">الإصدار المحدّث · 2026-07-21 · 21 صفحة · 36 بوت · 47 ميزة موثّقة</div>
+</header>
+
+<main>
+
+  <div class="toc">
+    <h3>🧭 المحتويات</h3>
+    <a href="#intro">نظرة عامة</a>
+    <a href="#pages">صفحات النظام</a>
+    <a href="#bots">نظام الحماية والبوتات</a>
+    <a href="#edu">التعليم التفاعلي</a>
+    <a href="#inspect">أزرار الفحص</a>
+    <a href="#money">القواعد المالية</a>
+    <a href="#deploy">النشر والتحديث</a>
+    <a href="#logos">اللوغوات</a>
+  </div>
+
+  <section id="intro">
+    <h2>📋 نظرة عامة</h2>
+    <p>GMT نظام متكامل لإدارة الأعمال التجارية: نقاط بيع، جرد، مشتريات، أوردرات، كفالات، عقود، متجر إلكتروني، وموقع. مبني ليعمل بشكل مستقل على المتصفح مع قاعدة بيانات سحابية، ومزوّد بنظام حماية ذاتي يراقب نفسه ويكتشف الأخطاء تلقائياً.</p>
+    <div class="card-grid">
+      <div class="mini"><div class="ic">🏪</div><div class="t">إدارة كاملة</div><div class="d">بيع · جرد · مشتريات · تسويات · عمولات</div></div>
+      <div class="mini"><div class="ic">🛡️</div><div class="t">حماية ذاتية</div><div class="d">6 طبقات كشف أخطاء تلقائية</div></div>
+      <div class="mini"><div class="ic">🎓</div><div class="t">تعليم تفاعلي</div><div class="d">يشرح كل زر خطوة بخطوة</div></div>
+      <div class="mini"><div class="ic">🧮</div><div class="t">رقابة مالية</div><div class="d">يتحقق من كل رقم رياضياً</div></div>
+    </div>
+  </section>
+
+  <section id="pages">
+    <h2>🗂️ صفحات النظام</h2>
+    <h3>صفحات الموظفين والإدارة</h3>
+    <table>
+      <tr><th>الصفحة</th><th>الوظيفة</th></tr>
+      <tr><td>🛒 نقطة البيع</td><td>البيع اليومي، الفواتير، العمولات</td></tr>
+      <tr><td>📦 الجرد</td><td>إدارة المخزون، الترحيل، أسعار الشراء</td></tr>
+      <tr><td>💼 أدمن نقاط البيع</td><td>إدارة الكاشيرات والفروع</td></tr>
+      <tr><td>📋 الأوردرات</td><td>طلبات المتجر، التنفيذ</td></tr>
+      <tr><td>🏭 المشتريات</td><td>الشراء، توزيع المصاريف على التكلفة</td></tr>
+      <tr><td>🌉 الجسر</td><td>ربط الجرد بالمتجر</td></tr>
+      <tr><td>👑 الأدمن السيادي</td><td>أعلى صلاحية، الإعدادات الحسّاسة</td></tr>
+      <tr><td>📜 العقود · 🛡️ الكفالة</td><td>إنشاء وإدارة العقود والكفالات</td></tr>
+      <tr><td>💾 النسخ الاحتياطي</td><td>حفظ واستعادة البيانات</td></tr>
+    </table>
+    <h3>صفحات الزبون (عامة)</h3>
+    <table>
+      <tr><th>الصفحة</th><th>الوظيفة</th></tr>
+      <tr><td>🛍️ المتجر</td><td>تصفّح المنتجات، الطلب، الكوبونات</td></tr>
+      <tr><td>✅ إنشاء الكفالة</td><td>تسجيل كفالة جديدة</td></tr>
+      <tr><td>🔍 بحث الكفالة</td><td>الاستعلام عن كفالة</td></tr>
+      <tr><td>🚚 تتبّع الشحنة</td><td>متابعة حالة الشحنة</td></tr>
+    </table>
+    <div class="note">🔒 صفحات الزبون منظّفة تماماً من الأدوات الداخلية — الزبون يرى الواجهة فقط، لا أدوات فحص ولا بوتات إدارية.</div>
+  </section>
+
+  <section id="bots">
+    <h2>🛡️ نظام الحماية والبوتات</h2>
+    <p>النظام محمي بـ6 طبقات لكشف الأخطاء البرمجية تلقائياً — دون حاجة لمبرمج بشري يراجع الكود:</p>
+    <div class="card-grid">
+      <div class="mini"><div class="ic">🐞</div><div class="t">الحارس</div><div class="d">يلتقط أي خطأ لحظة وقوعه (JS · أعمدة مفقودة · تجمّد · كتابة مزدوجة)</div></div>
+      <div class="mini"><div class="ic">🛰️</div><div class="t">حارس الكود <span class="badge b-new">جديد</span></div><div class="d">يكشف الأزرار الميتة والدوال المفقودة استباقياً قبل الضغط</div></div>
+      <div class="mini"><div class="ic">🔍</div><div class="t">المفتّش</div><div class="d">يرصد الأخطاء الصامتة (نقرات بلا أثر)</div></div>
+      <div class="mini"><div class="ic">🧮</div><div class="t">الحارس المالي <span class="badge b-new">جديد</span></div><div class="d">يعيد حساب كل عملية رياضياً ويقارن</div></div>
+      <div class="mini"><div class="ic">🤖</div><div class="t">الفاحص الشامل</div><div class="d">يجرّب كل زر ورقم وطباعة تلقائياً</div></div>
+      <div class="mini"><div class="ic">🛡️</div><div class="t">المراقب السيادي</div><div class="d">العقل المركزي — يجمع كل البلاغات بتقرير موحّد</div></div>
+    </div>
+    <div class="note">🤝 <b>تقسيم العمل:</b> الفحص الثابت للكود (صياغة · جداول · روابط) يُنجز قبل النشر. أما التشغيل الحي (النقر · الأخطاء وقت التشغيل · صحة الأرقام) فتغطيه هذه البوتات أثناء العمل — فلا تفوت الأخطاء ولا تحتاج مراجعة يومية.</div>
+  </section>
+
+  <section id="edu">
+    <h2>🎓 التعليم التفاعلي</h2>
+    <p>موظف جديد يتعلّم النظام بنفسه دون شرح بشري. الجولة التفاعلية:</p>
+    <ol class="steps">
+      <li>تُأشّر على كل زر بالشاشة (حلقة حمراء نابضة).</li>
+      <li>تشرح: ماذا يفعل الزر · متى تستعمله · ماذا يتغيّر عند الضغط.</li>
+      <li>تنتقل للزر التالي عند الضغط على «التالي» — حتى إكمال كل الأزرار.</li>
+    </ol>
+    <h3>كيف تفتحها</h3>
+    <p>من زر 🎓 بأي صفحة ← «🚶 جولة: أشّر لي على كل زر»، أو من الوضع التدريبي ← زر «📖 دليل الأزرار».</p>
+    <div class="note">🎯 الوضع التدريبي آمن تماماً — كل ما تفعله يذهب لقاعدة وهمية، لا يمسّ بياناتك الحقيقية ولا يُرسل لأحد.</div>
+  </section>
+
+  <section id="inspect">
+    <h2>🔬 أزرار الفحص</h2>
+    <p>بكل صفحة موظف أزرار فحص جاهزة:</p>
+    <table>
+      <tr><th>الزر</th><th>يفحص</th></tr>
+      <tr><td>🛡️ المراقب</td><td>يجمع كل بلاغات البوتات بتقرير واحد</td></tr>
+      <tr><td>🤖 الفاحص الشامل</td><td>يجرّب كل زر بالصفحة فعلياً</td></tr>
+      <tr><td>🔍 المفتّش</td><td>الأخطاء الصامتة</td></tr>
+      <tr><td>🐞 الحارس</td><td>سجل الأخطاء</td></tr>
+      <tr><td>🧪 الفاحص الذاتي</td><td>اتصال القاعدة والجداول</td></tr>
+    </table>
+    <div class="note">🔬 <b>الفاحص المركزي:</b> صفحة مستقلة فيها زر واحد يفتح كل صفحات النظام ويفحصها دفعة واحدة — أزرار · روابط · صور · تنسيق · تراكب · تنسيق العقود. ثم تقرير موحّد قابل للنسخ.</div>
+  </section>
+
+  <section id="money">
+    <h2>🧮 القواعد المالية</h2>
+    <p>النظام يفرض قواعدك المالية بصرامة مطلقة بعد ضبطها مرة واحدة:</p>
+    <table>
+      <tr><th>القاعدة</th><th>التطبيق</th></tr>
+      <tr><td>البيع تحت التكلفة</td><td>ممنوع للكاشير · مسموح للأدمن/الشريك/العروض/الكوبونات</td></tr>
+      <tr><td>عمولة الكاشير</td><td>نصف (سعر البيع − التكلفة)</td></tr>
+      <tr><td>ربح الشركة</td><td>(البيع − الشراء) − العمولة</td></tr>
+      <tr><td>الكوبونات</td><td>تُطبّق مرة واحdة، تنتقل من المتجر لفاتورة الكاشير</td></tr>
+    </table>
+    <div class="note">⚙️ تُضبط القواعد مرة واحدة عبر <code>window.GMT_MONEY_RULES</code>، ثم يفرضها الحارس المالي على كل عملية تلقائياً.</div>
+  </section>
+
+  <section id="deploy">
+    <h2>🚀 النشر والتحديث</h2>
+    <h3>نشر جديد</h3>
+    <ol class="steps">
+      <li>شغّل ملفات SQL بالترتيب (ابدأ بملفات <code>GMT_00_BASE_*</code>).</li>
+      <li>ارفع مجلدات النشر الـ19 كما هي.</li>
+      <li>ارفع الصور واللوغوات (انظر القسم التالي).</li>
+      <li>افتح صفحة كأدمن واضغط 🧪 الفاحص الذاتي للتأكد.</li>
+    </ol>
+    <h3>تحديث نظام قائم</h3>
+    <p>ارفع مجلد الملفات المشتركة كاملاً فوق القديم — يحدّث كل البوتات والصفحات دفعة واحدة. لا حاجة لإعادة نشر كل شيء.</p>
+  </section>
+
+  <section id="logos">
+    <h2>🖼️ اللوغوات والأيقونات</h2>
+    <p>ارفع صور شركتك بمجلداتها. لتغيير أي شعار مستقبلاً، بدّله بنفس الاسم بنفس المجلد:</p>
+    <table>
+      <tr><th>الصورة</th><th>المجلدات</th></tr>
+      <tr><td>logo.jpg (شعار الشركة)</td><td>نقطة البيع · الجرد · الأدمن · الأوردرات · المشتريات · المتجر · التتبع</td></tr>
+      <tr><td>canonlogo.png (كانون)</td><td>المتجر · إنشاء الكفالة · بحث الكفالة</td></tr>
+      <tr><td>shamcash.png (شام كاش)</td><td>المتجر</td></tr>
+      <tr><td>mark.png (الماركة)</td><td>المتجر</td></tr>
+      <tr><td>genrallogo.png (العام)</td><td>إنشاء الكفالة</td></tr>
+      <tr><td>truck.png (السيارة)</td><td>تتبّع الشحنة</td></tr>
+      <tr><td>أيقونات gmt-icon-*</td><td>كل صفحات الموظفين (مع manifest.json)</td></tr>
+    </table>
+  </section>
+
+</main>
+
+<footer>
+  <div class="line"></div>
+  <p><b style="color:var(--red)">GMT</b> · General Media Tech · نظام إدارة الأعمال التجارية</p>
+  <p>التوثيق الشامل · محدّث 2026-07-21</p>
+</footer>
+
+</body>
+</html>

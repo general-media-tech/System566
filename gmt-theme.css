@@ -1,0 +1,49 @@
+/* ═══════════════════════════════════════════════════════════════════
+   🎨 gmt-theme.css — الثيم الموحّد لنظام GMT
+   أُنشئ 2026-08-18
+
+   سبب الإنشاء: ثماني صفحات تستدعي هذا الملف بـ<link> وهو **غير موجود**
+   في المستودع ⇒ 404 في كل تحميل صفحة. الصفحات تحمل ستايلها الداخلي
+   (فلا ينكسر الشكل)، لكن الطلب المفقود يلوّث الكونسول ويخفي أخطاء حقيقية،
+   ويمنع أي توحيد لاحق للهوية. هذا الملف يعرّف المتغيّرات الفعلية
+   المستعملة في الصفحات (--gmt-red · --gmt-dark · --gmt-black · --gmt-gradient)
+   ويبقى **محايداً**: لا يفرض تنسيقاً يصادم الستايل الداخلي القائم.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* هوية GMT — القيم مأخوذة من الصفحات نفسها */
+  --gmt-red:      #D5001C;
+  --gmt-red-dark: #A80016;
+  --gmt-dark:     #111111;
+  --gmt-black:    #000000;
+  --gmt-gradient: linear-gradient(135deg, #D5001C 0%, #A80016 100%);
+
+  /* رمادية مساندة */
+  --gmt-line:  #e5e7eb;
+  --gmt-muted: #64748b;
+  --gmt-bg:    #f1f5f9;
+  --gmt-card:  #ffffff;
+
+  /* دلالات الحالة */
+  --gmt-ok:   #16a34a;
+  --gmt-warn: #d97706;
+  --gmt-err:  #C00012;
+}
+
+/* أساسيات RTL آمنة — لا تصادم الستايل الداخلي للصفحات */
+html[dir="rtl"] body { text-align: right; }
+
+/* أدوات اختيارية: تُستعمل عند الحاجة فقط */
+.gmt-red        { color: var(--gmt-red) !important; }
+.gmt-bg-red     { background: var(--gmt-red) !important; color: #fff; }
+.gmt-bg-grad    { background: var(--gmt-gradient) !important; color: #fff; }
+.gmt-card       { background: var(--gmt-card); border: 1px solid var(--gmt-line); border-radius: 14px; }
+.gmt-muted      { color: var(--gmt-muted); }
+
+/* عناصر لا تُطبع */
+@media print {
+  .no-print, .gmt-no-print { display: none !important; }
+}
+
+/* تحسين قراءة الأرقام اللاتينية داخل نصّ عربي */
+.gmt-num, .num-ltr { direction: ltr; unicode-bidi: embed; display: inline-block; }

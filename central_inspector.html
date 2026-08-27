@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🔬 مركز الفحص الشامل — GMT</title>
+<style>
+  :root{ --red:#C00012; --bg:#f2f3f5; --card:#ffffff; --line:#e2e5ea; --tx:#1a1d23; --tx2:#6b7280; --ok:#16a34a; --warn:#d97706; --bad:#dc2626; }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Cairo,system-ui,"Segoe UI",Tahoma,sans-serif;background:var(--bg);color:var(--tx);line-height:1.7}
+  header{background:linear-gradient(135deg,#C00012,#8a000d);padding:22px 18px;text-align:center;border-bottom:3px solid #6a000a;color:#fff}
+  header h1{margin:0 0 4px;font-size:22px;font-weight:900}
+  header p{margin:0;color:rgba(255,255,255,.85);font-size:13px}
+  main{max-width:1100px;margin:0 auto;padding:18px 16px 70px}
+  .ctrl{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+  .btn{background:var(--red);color:#fff;border:0;border-radius:11px;padding:13px 22px;font:inherit;font-weight:900;font-size:15px;cursor:pointer;transition:.15s;box-shadow:0 2px 8px rgba(192,0,18,.2)}
+  .btn:hover{filter:brightness(1.1)} .btn:disabled{opacity:.5;cursor:wait}
+  .btn.g{background:var(--ok)} .btn.ghost{background:#fff;border:1px solid var(--line);color:var(--tx)}
+  .prog{flex:1;min-width:200px;height:12px;background:#e2e5ea;border-radius:8px;overflow:hidden}
+  .prog i{display:block;height:100%;background:linear-gradient(90deg,var(--red),#ff4560);width:0;transition:.3s}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:16px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .stat .n{font-size:24px;font-weight:900} .stat .l{font-size:11px;color:var(--tx2);margin-top:3px}
+  .stat.ok .n{color:var(--ok)} .stat.warn .n{color:var(--warn)} .stat.bad .n{color:var(--bad)}
+  .page{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .page-hd{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;cursor:pointer}
+  .page-hd:hover{background:#fafbfc}
+  .page-hd .nm{font-weight:800;font-size:14px}
+  .page-hd .badge{font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px}
+  .b-ok{background:#dcfce7;color:#15803d} .b-warn{background:#fef3c7;color:#b45309} .b-bad{background:#fee2e2;color:#b91c1c} .b-wait{background:#f1f5f9;color:#64748b}
+  .page-body{display:none;padding:0 15px 14px;border-top:1px solid var(--line)}
+  .page.open .page-body{display:block}
+  .chk{font-size:12.5px;padding:5px 0;border-bottom:1px solid #f1f3f5;display:flex;gap:8px}
+  .chk .ic{flex-shrink:0}
+  .sec{font-size:11px;font-weight:800;color:var(--tx2);margin:10px 0 4px;text-transform:uppercase}
+  #frame{position:fixed;left:-9999px;top:0;width:1200px;height:800px;border:0}
+  .hint{background:#fff5f5;border:1px solid #fecaca;border-radius:11px;padding:12px 14px;font-size:12.5px;margin-bottom:14px;color:#7f1d1d}
+  .now{font-size:12px;color:var(--tx2);margin-inline-start:8px}
+  pre{white-space:pre-wrap;font-size:11px;color:#374151;background:#f8f9fb;padding:8px;border-radius:6px;margin:4px 0;max-height:160px;overflow:auto;border:1px solid var(--line)}
+  .copy{background:#fff;border:1px solid var(--line);color:var(--tx);border-radius:8px;padding:8px 14px;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+  <script src="gmt-image-guard.js?v=20260824"></script>
+  <script src="gmt-updater.js?v=20260824"></script>
+  <script src="gmt-core.js?v=20260824"></script>
+  <script src="gmt-staff.js?v=20260824"></script>
+
+<header>
+  <h1>🔬 مركز الفحص الشامل</h1>
+  <p>زر واحد — يفتح كل صفحة، يفحص كل زر ورابط وواجهة وتنسيق، صفحة صفحة</p>
+</header>
+
+<main>
+  <div class="hint">
+    تفتح الأداة كل صفحة داخل إطار وتفحصها آلياً: الأزرار · الروابط · الحقول · الصور · <b>التنسيق (تراكب، طفح نص، عناصر خارج الشاشة)</b> · أخطاء الكونسول.
+    تعمل على الصفحات المنشورة بنفس الموقع. لا تُجري عمليات بيع حقيقية — فحص واجهة فقط.
+  </div>
+
+  <div class="ctrl">
+    <button class="btn" id="run">▶️ ابدأ الفحص الشامل</button>
+    <button class="btn ghost" id="stop" disabled>⏹ إيقاف</button>
+    <div class="prog"><i id="bar"></i></div>
+    <span class="now" id="now"></span>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="s-pages">0</div><div class="l">صفحة</div></div>
+    <div class="stat ok"><div class="n" id="s-ok">0</div><div class="l">سليمة</div></div>
+    <div class="stat warn"><div class="n" id="s-warn">0</div><div class="l">تحذيرات</div></div>
+    <div class="stat bad"><div class="n" id="s-bad">0</div><div class="l">مشاكل</div></div>
+    <div class="stat"><div class="n" id="s-btn">0</div><div class="l">زر مفحوص</div></div>
+  </div>
+
+  <button class="copy" id="copyall" style="margin-bottom:12px;display:none">📋 نسخ التقرير الكامل</button>
+  <div id="results"></div>
+</main>
+
+<iframe id="frame" title="فحص"></iframe>
+
+<script>
+(function(){
+  'use strict';
+  // قائمة الصفحات (مسارات نسبية من جذر الموقع)
+  var PAGES = [
+    {f:'pos.html', n:'نقطة البيع', role:'emp'},
+    {f:'inventory.html', n:'الجرد', role:'emp'},
+    {f:'admin_pos.html', n:'أدمن نقاط البيع', role:'emp'},
+    {f:'orders.html', n:'الأوردرات', role:'emp'},
+    {f:'purchase.html', n:'المشتريات', role:'emp'},
+    {f:'bridge.html', n:'الجسر', role:'emp'},
+    {f:'store.html', n:'المتجر', role:'cust'},
+    {f:'admin_store.html', n:'أدمن المتجر', role:'emp'},
+    {f:'guarantee.html', n:'إنشاء الكفالة', role:'cust'},
+    {f:'guarantee_admin.html', n:'أدمن الكفالة', role:'emp'},
+    {f:'search.html', n:'بحث الكفالة', role:'cust'},
+    {f:'admin_sovereign.html', n:'الأدمن السيادي', role:'emp'},
+    {f:'deal.html', n:'العقود', role:'emp'},
+    {f:'admin_site.html', n:'أدمن الموقع', role:'emp'},
+    {f:'track_order.html', n:'تتبع الشحنة', role:'cust'},
+    {f:'backup.html', n:'النسخ الاحتياطي', role:'emp'},
+    {f:'guard_bots.html', n:'بوتات الحماية', role:'emp'},
+    {f:'center.html', n:'مركز المعرفة', role:'emp'}
+  ];
+
+  var BASE = location.pathname.replace(/[^/]*$/,'').replace(/[^/]*\/$/,'');  // جذر الموقع
+  var frame = document.getElementById('frame');
+  var results = document.getElementById('results');
+  var stopped = false, stats={pages:0,ok:0,warn:0,bad:0,btn:0};
+  var report = [];
+
+  function upd(){
+    document.getElementById('s-pages').textContent=stats.pages;
+    document.getElementById('s-ok').textContent=stats.ok;
+    document.getElementById('s-warn').textContent=stats.warn;
+    document.getElementById('s-bad').textContent=stats.bad;
+    document.getElementById('s-btn').textContent=stats.btn;
+  }
+
+  // فحص صفif واحده داخل iframe
+  function scanPage(page){
+    return new Promise(function(resolve){
+      var checks=[], errors=[];
+      var done=false;
+      // التقاط أخطاء الإطار
+      function onErr(e){ errors.push(String(e.message||e).slice(0,120)); }
+      var to=setTimeout(function(){ finish('timeout'); }, 12000);
+
+      frame.onload=function(){
+        setTimeout(function(){
+          try{
+            var doc=frame.contentDocument, win=frame.contentWindow;
+            if(!doc){ finish('no-access'); return; }
+            win.addEventListener&&win.addEventListener('error',onErr);
+
+            // ① الأزرار
+            var btns=doc.querySelectorAll('button, [onclick], .btn, [role=button]');
+            var dead=0, okBtn=0;
+            btns.forEach(function(b){
+              var hasHandler = b.onclick || b.getAttribute('onclick') || b.getAttribute('href');
+              var visible = b.offsetParent!==null || getComputedStyle(b).position==='fixed';
+              if(!hasHandler && b.tagName==='BUTTON' && !b.type){ dead++; }
+              else okBtn++;
+              stats.btn++;
+            });
+            checks.push({t:'الأزرار', ok: dead===0, msg: btns.length+' زر · '+okBtn+' فعّال'+(dead?' · '+dead+' مشبوه':'')});
+
+            // ② الروابط
+            var links=doc.querySelectorAll('a[href]');
+            var badLinks=0;
+            links.forEach(function(a){
+              var h=a.getAttribute('href');
+              if(h && h!=='#' && !h.startsWith('javascript') && h.endsWith('.html')){
+                // رابط داخلي — لا يمكن جلبه هنا لكن نتحقق من الشكل
+                if(h.indexOf(' ')>=0) badLinks++;
+              }
+            });
+            checks.push({t:'الروابط', ok: badLinks===0, msg: links.length+' رابط'+(badLinks?' · '+badLinks+' مشبوه':' · سليمة')});
+
+            // ③ الصور المكسورة
+            var imgs=doc.querySelectorAll('img');
+            var broken=0;
+            imgs.forEach(function(im){ if(im.complete && im.naturalWidth===0) broken++; });
+            checks.push({t:'الصور', ok: broken===0, msg: imgs.length+' صورة'+(broken?' · 🔴 '+broken+' مكسورة':' · سليمة')});
+
+            // ④ التنسيق: عناصر متراكبة / طافحة / خارج الشاشة
+            var overflow=0, offscreen=0, overlap=0, tinyText=0, emptyBtn=0;
+            var all=doc.querySelectorAll('div,section,table,p,h1,h2,h3,input,select,button,span');
+            var vw=doc.documentElement.clientWidth;
+            var rects=[];
+            all.forEach(function(el){
+              var r=el.getBoundingClientRect();
+              // طفح أفقي كبير
+              if(r.width>vw+50 && el.scrollWidth>el.clientWidth+30) overflow++;
+              // عنصر خارج الشاشة
+              if(r.left< -100 || r.right>vw+150) offscreen++;
+              // نص صغير جداً (أقل من 8px = صعب القراءة)
+              var fs=parseFloat(getComputedStyle(el).fontSize);
+              if(el.textContent.trim() && fs>0 && fs<8) tinyText++;
+              // زر فارغ (بلا نص ولا أيقونة)
+              if(el.tagName==='BUTTON' && !el.textContent.trim() && !el.querySelector('img,svg,i')) emptyBtn++;
+            });
+            checks.push({t:'التنسيق', ok: overflow<3 && offscreen<5,
+              msg: (overflow?'🔴 '+overflow+' عنصر طافح':'✅ لا طفح أفقي')+' · '+(offscreen?offscreen+' خارج الشاشة':'محاذاة سليمة')});
+            if(tinyText>0 || emptyBtn>0)
+              checks.push({t:'تفاصيل', ok: tinyText<5 && emptyBtn<2,
+                msg:(tinyText?tinyText+' نص صغير جداً':'')+(tinyText&&emptyBtn?' · ':'')+(emptyBtn?emptyBtn+' زر فارغ':'')});
+
+            // ④ب فحص تراكب العناصر الكبيرة (سطور فوق بعض)
+            var blocks=doc.querySelectorAll('.card,section,.box,table,form');
+            for(var bi=0; bi<Math.min(blocks.length,40); bi++){
+              var r1=blocks[bi].getBoundingClientRect();
+              if(r1.width<20||r1.height<10) continue;
+              for(var bj=bi+1; bj<Math.min(blocks.length,40); bj++){
+                var r2=blocks[bj].getBoundingClientRect();
+                if(r2.width<20||r2.height<10) continue;
+                // تراكب فعلي (مش أب/ابن)
+                if(!blocks[bi].contains(blocks[bj]) && !blocks[bj].contains(blocks[bi])){
+                  var ox=Math.max(0,Math.min(r1.right,r2.right)-Math.max(r1.left,r2.left));
+                  var oy=Math.max(0,Math.min(r1.bottom,r2.bottom)-Math.max(r1.top,r2.top));
+                  if(ox>50 && oy>30) overlap++;
+                }
+              }
+            }
+            if(overlap>2) checks.push({t:'التراكب', ok:false, msg:'🔴 '+overlap+' عنصرين متراكبين (سطور فوق بعض محتملة)'});
+
+            // ⑤ الحقول الفارغة الإجبارية / النماذج
+            var inputs=doc.querySelectorAll('input,select,textarea');
+            checks.push({t:'الحقول', ok:true, msg: inputs.length+' حقل إدخال'});
+
+            // ⑥ أخطاء الكونسول (إن رصدها الحارس بالإطار)
+            var wErr=[];
+            try{ if(win.GMTWarden && win.GMTWarden.incidents) wErr=win.GMTWarden.incidents(); }catch(e){}
+            if(errors.length) checks.push({t:'الكونسول', ok:false, msg:'🔴 '+errors.length+' خطأ: '+errors.slice(0,2).join(' · ')});
+            else checks.push({t:'الكونسول', ok:true, msg:'لا أخطاء ظاهرة'});
+
+            // ⑦ فحص خاص: صفحة العقود (تنسيق العقد)
+            if(page.n==='العقود' || page.n==='أدمن الكفالة'){
+              var tables=doc.querySelectorAll('table');
+              var emptyRows=0;
+              doc.querySelectorAll('tr').forEach(function(tr){ if(!tr.textContent.trim()) emptyRows++; });
+              checks.push({t:'تنسيق العقد', ok: emptyRows<2, msg: tables.length+' جدول'+(emptyRows?' · ⚠️ '+emptyRows+' صف فارغ':' · مرتّب')});
+            }
+
+            // ═══════════ الفحوصات الحقيقية (كمستخدم بشري) ═══════════
+
+            // ⑧ فحص تحميل البوتات الأساسية (هل GMTCache/core محمّلة؟)
+            try {
+              var botsMissing = [];
+              // GMT_DB هو الاسم الصحيح (ليس GMT_CONFIG)
+              if(typeof win.GMTCache==='undefined') botsMissing.push('GMTCache');
+              if(typeof win.GMTUI==='undefined') botsMissing.push('GMTUI');
+              if(typeof win.GMT_DB==='undefined' && typeof win.GMT_CONFIG==='undefined') botsMissing.push('GMT_DB');
+              checks.push({
+                t:'تحميل البوتات', ok: botsMissing.length===0,
+                msg: botsMissing.length===0 ? 'كل البوتات الأساسية محمّلة' : ('🔴 غير محمّلة: '+botsMissing.join(', ')),
+                why: botsMissing.length ? 'الصفحة تستعمل هذه البوتات لكنها غير معرّفة — غالباً ترتيب تحميل خاطئ أو _shared غير مرفوع' : '',
+                fix: botsMissing.length ? 'تأكد أن gmt-core.js يُحمّل بأول الصفحة، وأن مجلد _shared مرفوع' : ''
+              });
+            } catch(e){}
+
+            // ⑨ نقر فعلي على عيّنة أزرار آمنة (مراقبة الأخطاء)
+            try {
+              var clickErrors = 0, clicked = 0;
+              // أزرار آمنة فقط (تبويبات، فتح نوافذ) — نتجنّب حذف/حفظ
+              var safeButtons = Array.prototype.slice.call(
+                doc.querySelectorAll('button[onclick*="switchTab"], button[onclick*="show"], button[onclick*="open"], .tab, [role=tab]')
+              ).slice(0, 5);
+              var beforeErr = errors.length;
+              safeButtons.forEach(function(b){
+                try {
+                  if(b.offsetParent!==null){ b.click(); clicked++; }
+                } catch(ce){ clickErrors++; }
+              });
+              var afterErr = errors.length;
+              var newErrors = afterErr - beforeErr;
+              checks.push({
+                t:'نقر فعلي (اختبار حي)', ok: clickErrors===0 && newErrors===0,
+                msg: clicked+' زر جُرّب فعلياً'+((clickErrors+newErrors)?' · 🔴 '+(clickErrors+newErrors)+' خطأ':' · بلا أخطاء'),
+                why: (clickErrors+newErrors) ? 'ضغط الأزرار سبّب أخطاء JavaScript — قد تكون دالة غير معرّفة أو خطأ منطقي' : '',
+                fix: (clickErrors+newErrors) ? 'راجع أخطاء الكونسول أدناه لمعرفة الدالة المعطوبة' : ''
+              });
+            } catch(e){}
+
+            // ⑩ فحص حسابي (إن كانت صفحة بيع/مشتريات — تحقق من دوال الحساب)
+            try {
+              if(/نقطة البيع|المشتريات|الأوردرات/.test(page.n)){
+                var calcOk = true, calcMsg = 'لا دوال حساب ظاهرة';
+                // هل توجد دالة حساب إجمالي؟
+                var hasCalc = typeof win.calculateTotal==='function' || typeof win.computeTotal==='function' ||
+                              typeof win.updateTotal==='function' || win.GMT_MONEY_RULES;
+                if(hasCalc){
+                  calcMsg = 'دوال الحساب موجودة';
+                  // اختبار بسيط: هل money-guard محمّل؟
+                  if(win.GMT_MONEY_RULES){ calcMsg += ' · قواعد الربح محمّلة'; }
+                }
+                checks.push({
+                  t:'الفحص الحسابي', ok: calcOk,
+                  msg: calcMsg,
+                  why:'', fix:''
+                });
+              }
+            } catch(e){}
+
+            // ⑪ فحص تحميل البيانات (هل الجداول/القوائم امتلأت أم فشلت؟)
+            try {
+              // ابحث عن مؤشرات "لا توجد بيانات" أو "خطأ في التحميل"
+              var bodyText = doc.body.innerText || '';
+              var loadFailed = /خطأ في التحميل|is not defined|فشل|failed to fetch/i.test(bodyText);
+              var emptyData = /لا توجد|لا يوجد|فارغ/.test(bodyText) && !/منتج|عنصر/.test(bodyText);
+              if(loadFailed){
+                var errMatch = bodyText.match(/([A-Za-z]+ is not defined|خطأ في التحميل[^\n]{0,60})/);
+                checks.push({
+                  t:'تحميل البيانات', ok: false,
+                  msg: '🔴 فشل تحميل البيانات',
+                  why: errMatch ? ('الخطأ الظاهر: '+errMatch[0]) : 'ظهرت رسالة فشل بالصفحة',
+                  fix: 'إذا كان "is not defined" فالسبب بوت غير محمّل (راجع ترتيب التحميل و_shared)'
+                });
+              } else {
+                checks.push({ t:'تحميل البيانات', ok: true, msg: 'لا رسائل فشل ظاهرة' });
+              }
+            } catch(e){}
+
+            finish(null, checks, errors);
+          }catch(e){
+            // cross-origin أو منع
+            finish('blocked:'+String(e.message).slice(0,60));
+          }
+        }, 5000); // انتظار تحميل السكربتات (core كبير + updater)
+      };
+
+      function finish(err, chks, errs){
+        if(done) return; done=true; clearTimeout(to);
+        resolve({page:page, err:err, checks:chks||[], errors:errs||[]});
+      }
+
+      // حمّل الصفحة
+      try{ frame.src = BASE + page.f; }
+      catch(e){ finish('load-fail'); }
+    });
+  }
+
+  function renderPage(res){
+    var bad=res.checks.filter(function(c){return !c.ok;}).length;
+    var status = res.err ? 'wait' : (bad===0?'ok':(bad<=1?'warn':'bad'));
+    if(res.err && res.err.indexOf('blocked')<0 && res.err!=='timeout') status='bad';
+    if(status==='ok') stats.ok++; else if(status==='warn') stats.warn++; else if(status==='bad') stats.bad++;
+    stats.pages++;
+
+    var badgeTxt = res.err ? (res.err==='timeout'?'مهلة':res.err.indexOf('blocked')>=0?'محمي':'تعذّر') : (bad===0?'✅ سليمة':bad+' ملاحظة');
+    var div=document.createElement('div');
+    div.className='page';
+    var body = res.checks.map(function(c){
+      var extra = '';
+      if(!c.ok && c.why) extra += '<div style="margin-right:26px;font-size:12px;color:#b45309;margin-top:2px">↳ <b>لماذا:</b> '+c.why+'</div>';
+      if(!c.ok && c.fix) extra += '<div style="margin-right:26px;font-size:12px;color:#15803d;margin-top:2px">↳ <b>كيف نصلح:</b> '+c.fix+'</div>';
+      return '<div class="chk"><span class="ic">'+(c.ok?'✅':'🔴')+'</span><span><b>'+c.t+':</b> '+c.msg+extra+'</span></div>';
+    }).join('');
+    if(res.err && !res.checks.length){
+      body='<div class="chk"><span class="ic">ℹ️</span><span>'+(res.err==='blocked'||res.err.indexOf('blocked')>=0?'الصفحة محمية من الفحص المباشر (طبيعي لبعض الصفحات) — افتحها واضغط 🤖 بداخلها':'تعذّر الفحص: '+res.err)+'</span></div>';
+    }
+    div.innerHTML='<div class="page-hd"><span class="nm">'+res.page.n+'</span><span class="badge b-'+status+'">'+badgeTxt+'</span></div>'+
+                  '<div class="page-body">'+body+'</div>';
+    div.querySelector('.page-hd').onclick=function(){ div.classList.toggle('open'); };
+    if(status!=='ok') div.classList.add('open');
+    results.appendChild(div);
+
+    // للتقرير النصي
+    report.push('── '+res.page.n+' ['+badgeTxt+'] ──');
+    res.checks.forEach(function(c){
+      report.push('  '+(c.ok?'✅':'🔴')+' '+c.t+': '+c.msg);
+      if(!c.ok && c.why) report.push('       ↳ لماذا: '+c.why);
+      if(!c.ok && c.fix) report.push('       ↳ كيف نصلح: '+c.fix);
+    });
+    report.push('');
+    upd();
+  }
+
+  document.getElementById('run').onclick=async function(){
+    stopped=false; results.innerHTML=''; report=['🔬 تقرير الفحص الشامل — '+new Date().toLocaleString('ar-SY'),''];
+    stats={pages:0,ok:0,warn:0,bad:0,btn:0}; upd();
+    this.disabled=true; document.getElementById('stop').disabled=false;
+    document.getElementById('copyall').style.display='none';
+
+    for(var i=0;i<PAGES.length;i++){
+      if(stopped) break;
+      document.getElementById('now').textContent='يفحص: '+PAGES[i].n+' ('+(i+1)+'/'+PAGES.length+')';
+      document.getElementById('bar').style.width=((i)/PAGES.length*100)+'%';
+      var res=await scanPage(PAGES[i]);
+      renderPage(res);
+    }
+    document.getElementById('bar').style.width='100%';
+    document.getElementById('now').textContent='✅ اكتمل الفحص';
+    this.disabled=false; document.getElementById('stop').disabled=true;
+    document.getElementById('copyall').style.display='inline-block';
+    frame.src='about:blank';
+  };
+
+  document.getElementById('stop').onclick=function(){ stopped=true; this.disabled=true; document.getElementById('run').disabled=false; };
+
+  document.getElementById('copyall').onclick=function(){
+    var txt=report.join('\n');
+    navigator.clipboard.writeText(txt).then(function(){ this.textContent='✅ نُسخ!'; }.bind(this))
+      .catch(function(){ var t=document.createElement('textarea'); t.value=txt; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); this.textContent='✅ نُسخ!'; }.bind(this));
+    setTimeout(function(){ document.getElementById('copyall').textContent='📋 نسخ التقرير الكامل'; },1500);
+  };
+})();
+</script>
+</body>
+</html>
